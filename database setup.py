@@ -65,3 +65,26 @@ for column in required_columns:
         disc_report[column] = None
 
 # ***********************************DATABASE PROCESSING**********************************************#
+
+# Establish a connection to MySQL Server
+mydb = mysql.connector.connect(
+    host='Localhost',
+    user='root',
+    password = '34&*^&AsXti2098as3#$><?',
+    database='rtpos')
+
+mycursor = mydb.cursor()
+
+# Insert the data first time into the database
+for _, row in disc_report.iterrows():
+    sql = """
+    INSERT INTO desc_report (
+        Market, Store, Store_ID, Store_Limit, Override_Disc, Disc_SKU,
+        Total_Availed, Remaining, EOL, Aging, Cx_Survey, MD_approved, Comment
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    values = tuple(row[col] for col in required_columns)
+    mycursor.execute(sql, values)
+
+# Commit the transaction
+mydb.commit()
