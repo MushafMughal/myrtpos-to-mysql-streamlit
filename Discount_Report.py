@@ -106,16 +106,13 @@ if selected == "Data Updation":
 
     elif option == 'Create':
         st.subheader('Create a Store Record')
-
         # Input fields for the new table
         market = st.text_input('Enter Market')
         store = st.text_input('Enter Store')
-        store_id = st.text_input('Enter Store ID')  # Primary Key
+        store_id = st.text_input('Enter Store ID',)  # Primary Key
         store_limit = st.number_input('Enter Store Limit', min_value=0, step=1)
         override_disc = st.number_input('Enter Override Discount', format="%.2f")
         disc_sku = st.number_input('Enter Discount SKU', format="%.2f")
-        total_availed = st.number_input('Enter Total Availed', format="%.2f")
-        remaining = st.number_input('Enter Remaining', format="%.2f")
         eol = st.number_input('Enter EOL', format="%.2f")
         aging = st.number_input('Enter Aging', format="%.2f")
         cx_survey = st.number_input('Enter CX Survey', format="%.2f")
@@ -123,25 +120,38 @@ if selected == "Data Updation":
         comment = st.text_input('Enter Comment')
 
         if st.button("Create Record"):
-            sql = '''
-                INSERT INTO desc_report (
-                    Market, Store, Store_ID, Store_Limit, Override_Disc, Disc_SKU, 
-                    Total_Availed, Remaining, EOL, Aging, Cx_Survey, MD_approved, Comment
-                ) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            '''
-            val = (
-                market, store, store_id, store_limit, override_disc, disc_sku, 
-                total_availed, remaining, eol, aging, cx_survey, md_approved, comment
-            )
-            try:
-                mycursor.execute(sql, val)
-                mydb.commit()
-                st.success('Record Created Successfully')
-            except pymysql.IntegrityError as e:
-                st.error('Error: Duplicate entry for primary key. Please provide a unique Store ID.')
-            except Exception as e:
-                st.error(f"An error occurred: {str(e)}")
+            if not market:
+                st.error("Market is required. Please provide a valid Market.")
+            elif not store:
+                st.error("Store Name is required. Please provide a valid Store Name.")
+            elif not store_id:
+                st.error("Store ID is required. Please provide a valid Store ID.")
+            elif not store_limit:
+                st.error("Store Limit is required. Please provide a valid Store Limit.")
+            elif not override_disc:
+                st.error("Override discount is required. Please provide a valid Override Discount.")
+            elif not disc_sku:
+                st.error("Discount SKU is required. Please provide a valid Discount SKU.")
+            else:
+                sql = '''
+                    INSERT INTO desc_report (
+                        Market, Store, Store_ID, Store_Limit, Override_Disc, Disc_SKU, 
+                        EOL, Aging, Cx_Survey, MD_approved, Comment
+                    ) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                '''
+                val = (
+                    market, store, store_id, store_limit, override_disc, 
+                    disc_sku, eol, aging, cx_survey, md_approved, comment
+                )
+                try:
+                    mycursor.execute(sql, val)
+                    mydb.commit()
+                    st.success('Record Created Successfully')
+                except pymysql.IntegrityError as e:
+                    st.error('Error: Duplicate entry for primary key. Please provide a unique Store ID.')
+                except Exception as e:
+                    st.error(f"An error occurred: {str(e)}")
 
     elif option == 'Delete':
         st.subheader("Delete a Record")
