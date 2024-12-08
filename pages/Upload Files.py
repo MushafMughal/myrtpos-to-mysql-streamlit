@@ -83,8 +83,6 @@ def new_data_preprocessing(data1,data2,data3):
 
     return disc_report
 
-
-
 # Function to update database with DataFrame
 def update_or_insert_database(dataframe, connection, cursor):
 
