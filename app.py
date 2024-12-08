@@ -1,17 +1,18 @@
-import mysql.connector
+#import mysql.connector
+import pymysql
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-from streamlit_option_menu import option_menu
 import numpy as np
 
 # Establish a connection to MySQL Server
 def db():
-    return mysql.connector.connect(
-        host='Localhost',
-        user='root',
-        password = '34&*^&AsXti2098as3#$><?',
-        database='rtpos')
+    return pymysql.connect(   
+    host='localhost',
+    user='root',
+    password='34&*^&AsXti2098as3#$><?',
+    database='rtpos'
+    )
 
 mydb = db() 
 mycursor = mydb.cursor()
