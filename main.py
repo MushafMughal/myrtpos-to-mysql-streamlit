@@ -1,4 +1,5 @@
-import mysql.connector
+# import mysql.connector
+import pymysql
 import pandas as pd
 import numpy as np
 
@@ -58,20 +59,21 @@ disc_report["Disc_SKU"] = disc_report["Disc_SKU"].fillna(0)
 
 #for remaining columns
 required_columns = ['Market', 'Store', 'Store_ID', 'Store_Limit', 'Override_Disc',
-                    'Disc_SKU', 'Total_Availed', 'Remaining', 'EOL', 'Aging',
-                    'Cx_Survey', 'MD_approved', 'Comment']
+                    'Disc_SKU', 'EOL', 'Aging', 'Cx_Survey', 'MD_approved', 'Comment']
 for column in required_columns:
     if column not in disc_report.columns:
         disc_report[column] = None
 
 # ***********************************DATABASE PROCESSING**********************************************#
 
-# Establish a connection to MySQL Server
-mydb = mysql.connector.connect(
-    host='Localhost',
+# Establish a connection to MySQL Server using pymysql
+# mydb = mysql.connector.connect(  
+mydb = pymysql.connect(   
+    host='localhost',
     user='root',
-    password = '34&*^&AsXti2098as3#$><?',
-    database='rtpos')
+    password='34&*^&AsXti2098as3#$><?',
+    database='rtpos'
+)
 
 mycursor = mydb.cursor()
 
@@ -79,12 +81,13 @@ mycursor = mydb.cursor()
 for _, row in disc_report.iterrows():
     sql = """
     INSERT INTO desc_report (
-        Market, Store, Store_ID, Store_Limit, Override_Disc, Disc_SKU,
-        Total_Availed, Remaining, EOL, Aging, Cx_Survey, MD_approved, Comment
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        Market, Store, Store_ID, Store_Limit, Override_Disc, Disc_SKU, EOL, Aging, Cx_Survey, MD_approved, Comment) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = tuple(row[col] for col in required_columns)
     mycursor.execute(sql, values)
 
-# Commit the transaction
+# Commit the transaction and close the connection
 mydb.commit()
+mycursor.close()
+mydb.close()
