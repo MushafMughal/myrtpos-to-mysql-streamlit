@@ -66,13 +66,15 @@ for column in required_columns:
 # *************************Insert the data first time into the database*******************************#
 
 # Establish a connection to MySQL Server using pymysql
-mydb = pymysql.connect(   
+def db():
+    return pymysql.connect(   
     host='localhost',
     user='root',
     password='34&*^&AsXti2098as3#$><?',
     database='rtpos'
-)
+    )
 
+mydb = db() 
 mycursor = mydb.cursor()
 
 for _, row in disc_report.iterrows():
