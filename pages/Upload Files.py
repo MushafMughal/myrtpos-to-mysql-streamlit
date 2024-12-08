@@ -83,6 +83,8 @@ def new_data_preprocessing(data1,data2,data3):
 
     return disc_report
 
+
+
 # Function to update database with DataFrame
 def update_or_insert_database(dataframe, connection, cursor):
 
@@ -125,7 +127,7 @@ def update_or_insert_database(dataframe, connection, cursor):
                 INSERT INTO desc_report (
                     Market, Store, Store_ID, Store_Limit, Override_Disc, 
                     Disc_SKU, EOL, Aging, Cx_Survey, MD_approved, Comment
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             data_tuple = (
                 row['Market'], row['Store'], row['Store_ID'], row['Store_Limit'], row['Override_Disc'], 
@@ -139,7 +141,7 @@ def update_or_insert_database(dataframe, connection, cursor):
 #*******************************************STREAMLIT APP**************************************************************#
 
 st.title("Discount Report Page")
-st.sidebar.title("Menu")
+st.sidebar.header("Please Upload files")
 
 # Sidebar options
 option = st.sidebar.radio("Choose an option:", ["Existing Discount Report", "Upload New Files"])
