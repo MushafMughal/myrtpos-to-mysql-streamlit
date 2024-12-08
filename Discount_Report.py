@@ -36,16 +36,25 @@ selected = option_menu(menu_title=None,options=["Data Record", "Data Updation"],
 if selected == "Data Record":
     
     filtered_df = df
+    st.sidebar.header("Please Filter Here:")
+    # Sidebar - Filter by Market (with multiselect)
+    MARKET_options = sorted(df['Market'].unique().tolist())  # Add 'All' to MD options
+    selected_market = st.sidebar.multiselect('Select MD', MARKET_options,key="1")
 
-    # Sidebar filter for Store_ID
-    store_ids = df["Store_ID"].unique().tolist()
-    selected_store_ids = st.sidebar.multiselect("Filter by Store ID", options=store_ids)
-
-    # Filter the DataFrame
-    if len(selected_store_ids) == 0:
+    # Filter MD only if 'All' is not selected
+    if len(selected_market) == 0:
         pass
     else:
-        filtered_df = df[df["Store_ID"].isin(selected_store_ids)]
+        filtered_df = df[df['Market'].isin(selected_market)]
+
+    # Ensure filtered_df is not empty before applying Store ID filter
+    if not filtered_df.empty:
+        store_ids = filtered_df["Store_ID"].unique().tolist()
+        selected_store_ids = st.sidebar.multiselect("Select Store ID", options=store_ids)
+        
+        # Filter MARKET only if True
+        if len(selected_store_ids) > 0:
+            filtered_df = filtered_df[filtered_df['Store_ID'].isin(selected_store_ids)]
 
     # Display the filtered DataFrame
     st.dataframe(filtered_df,hide_index=True)
