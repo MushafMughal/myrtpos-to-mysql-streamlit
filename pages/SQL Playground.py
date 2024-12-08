@@ -90,5 +90,13 @@ if not filtered_df.empty:
     if len(selected_store_ids) > 0:
         filtered_df = filtered_df[filtered_df['Store_ID'].isin(selected_store_ids)]
 
+if not filtered_df.empty:
+    stores = filtered_df["Store"].unique().tolist()
+    selected_store = st.sidebar.multiselect("Select Store", options=stores)
+    
+    # Filter MARKET only if True
+    if len(selected_store) > 0:
+        filtered_df = filtered_df[filtered_df['Store'].isin(selected_store)]
+
 # Display the filtered DataFrame
 st.dataframe(filtered_df,hide_index=True)
