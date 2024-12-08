@@ -1,4 +1,3 @@
-# import mysql.connector
 import pymysql
 import pandas as pd
 import numpy as np
@@ -64,10 +63,9 @@ for column in required_columns:
     if column not in disc_report.columns:
         disc_report[column] = None
 
-# ***********************************DATABASE PROCESSING**********************************************#
+# *************************Insert the data first time into the database*******************************#
 
 # Establish a connection to MySQL Server using pymysql
-# mydb = mysql.connector.connect(  
 mydb = pymysql.connect(   
     host='localhost',
     user='root',
@@ -77,7 +75,6 @@ mydb = pymysql.connect(
 
 mycursor = mydb.cursor()
 
-# Insert the data first time into the database
 for _, row in disc_report.iterrows():
     sql = """
     INSERT INTO desc_report (
