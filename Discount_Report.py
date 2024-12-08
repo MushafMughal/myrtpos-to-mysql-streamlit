@@ -39,7 +39,7 @@ if selected == "Data Record":
     st.sidebar.header("Please Filter Here:")
     # Sidebar - Filter by Market (with multiselect)
     MARKET_options = sorted(df['Market'].unique().tolist())  # Add 'All' to MD options
-    selected_market = st.sidebar.multiselect('Select MD', MARKET_options,key="1")
+    selected_market = st.sidebar.multiselect('Select Market', MARKET_options,key="1")
 
     # Filter MD only if 'All' is not selected
     if len(selected_market) == 0:
@@ -66,43 +66,43 @@ if selected == "Data Updation":
         
         st.subheader('Update a Record')
         store_id = st.text_input('Enter Store ID to update')
-        if st.button("Enter"):
-            # Fetch the current record for the given Doctor ID
-            select_sql = 'SELECT * FROM desc_report WHERE Store_ID = %s'
-            select_val = (store_id,)
-            mycursor.execute(select_sql, select_val)
-            result = mycursor.fetchone()
+        st.button("Enter")
+        # Fetch the current record for the given Doctor ID
+        select_sql = 'SELECT * FROM desc_report WHERE Store_ID = %s'
+        select_val = (store_id,)
+        mycursor.execute(select_sql, select_val)
+        result = mycursor.fetchone()
 
-            if result is not None:
-                # Get the column names dynamically from the table
-                desc_sql = 'DESCRIBE desc_report'
-                mycursor.execute(desc_sql)
-                columns = [column[0] for column in mycursor.fetchall()]
+        if result is None:
+            st.warning('No record found with the provided Store ID')
+        else:
+            # Get the column names dynamically from the table
+            desc_sql = 'DESCRIBE desc_report'
+            mycursor.execute(desc_sql)
+            columns = [column[0] for column in mycursor.fetchall()]
 
-                current_data = list(result)
+            current_data = list(result)
 
-                updated_data = []
-                for column in columns[1:]:
-                    updated_value = st.text_input(f'Enter updated {column}', value=current_data[columns.index(column)])
-                    updated_data.append(updated_value)
+            updated_data = []
+            for column in columns[1:]:
+                updated_value = st.text_input(f'Enter updated {column}', value=current_data[columns.index(column)])
+                updated_data.append(updated_value)
 
-                if st.button("Update"):
-                    # Create the SQL update query dynamically
-                    update_sql = f"UPDATE desc_report SET {', '.join([f'{column} = %s' for column in columns[1:]])} WHERE Store_ID = %s"
-                    
-                    # Append the primary key (Store_ID) as the last parameter
-                    update_values = updated_data + [store_id]
+            if st.button("Update"):
+                # Create the SQL update query dynamically
+                update_sql = f"UPDATE desc_report SET {', '.join([f'{column} = %s' for column in columns[1:]])} WHERE Store_ID = %s"
+                
+                # Append the primary key (Store_ID) as the last parameter
+                update_values = updated_data + [store_id]
 
-                    try:
-                        # Execute the update query
-                        mycursor.execute(update_sql, update_values)
-                        mydb.commit()  # Commit changes to the database
-                        st.success("Record updated successfully!")
-                    except Exception as e:
-                        mydb.rollback()  # Rollback in case of an error
-                        st.error(f"An error occurred while updating: {e}")
-            else:
-                st.warning('No record found with the provided Store ID')
+                try:
+                    # Execute the update query
+                    mycursor.execute(update_sql, update_values)
+                    mydb.commit()  # Commit changes to the database
+                    st.success("Record updated successfully!")
+                except Exception as e:
+                    mydb.rollback()  # Rollback in case of an error
+                    st.error(f"An error occurred while updating: {e}")
 
     elif option == 'Create':
         st.subheader('Create a Store Record')
