@@ -136,7 +136,7 @@ def update_or_insert_database(dataframe, connection, cursor):
     # Commit the changes and close the connection
     connection.commit()
 
-#*******************************************STREAMLIT APP**************************************************************#
+#********************************************STREAMLIT APP**************************************************************#
 
 st.title("Discount Report Page")
 st.sidebar.header("Please Upload files")
