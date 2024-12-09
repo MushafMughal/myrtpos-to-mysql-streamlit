@@ -14,6 +14,27 @@ def db():
 mydb = db() 
 cursor = mydb.cursor()
 
+styling = """
+<style>
+    #root > div:nth-child(1) > div.withScreencast > div > div > div > section.stAppViewMain.main > div.stAppViewBlockContainer.block-container > div {
+        margin-top:-30px;
+    }
+
+    #root > div:nth-child(1) > div.withScreencast > div > div > div > section.stSidebar > div > div {
+        margin-top: 10px;
+    }
+
+    /* Multi select options styling */
+    span[data-baseweb="tag"] {
+        background-color: #832a80 !important;
+        border-radius: 25px !important;
+        box-shadow: 0px 4px 6px #f3f3f3eb !important;
+    }
+
+</style>
+"""
+st.markdown(styling,unsafe_allow_html=True)
+
 # Streamlit app code
 st.title("SQL Playground")
 
@@ -99,4 +120,7 @@ if not filtered_df.empty:
         filtered_df = filtered_df[filtered_df['Store'].isin(selected_store)]
 
 # Display the filtered DataFrame
-st.dataframe(filtered_df,hide_index=True)
+if len(selected_market) != 0 or len(selected_store) != 0  or len(selected_store_ids) !=0:
+    st.dataframe(filtered_df,hide_index=True)
+else:
+    st.dataframe(filtered_df,hide_index=True,height=500)

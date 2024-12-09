@@ -16,6 +16,25 @@ def db():
 mydb = db() 
 mycursor = mydb.cursor()
 
+top_gap = """
+<style>
+    #root > div:nth-child(1) > div.withScreencast > div > div > div > section.stAppViewMain.main > div.stAppViewBlockContainer.block-container > div {
+        margin-top:-30px;
+    }
+
+    #root > div:nth-child(1) > div.withScreencast > div > div > div > section.stSidebar > div > div {
+        margin-top: 10px;
+    }
+
+    /* Radio setting */
+    #root > div:nth-child(1) > div.withScreencast > div > div > div > section.stSidebar > div > div > div > div > div > div > div:nth-child(2) > div > div > label > div:first-child {
+        background-color: #832a80 !important;
+    }
+
+</style>
+"""
+st.markdown(top_gap,unsafe_allow_html=True)
+
 # Preprocessing the data for database
 def new_data_preprocessing(data1,data2,data3):
 
@@ -175,7 +194,7 @@ if option == "Upload New Files":
         time.sleep(1)
         success_placeholder.empty()
         final_df = new_data_preprocessing(file1,file2,file3)
-        st.dataframe(final_df,hide_index=True)
+        st.dataframe(final_df,hide_index=True,height=500)
         
         if st.button("Update Database"):
             try:
