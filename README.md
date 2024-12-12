@@ -8,15 +8,19 @@ A streamlined application for syncing MYRTPOS data with MySQL and creating a cus
 
 - **Create from Scratch**: Upload three input files (Override Sales Report, Mapping File, and Sales by Category Report) to generate and populate the database.
 - **Use Existing Data**: Upload a pre-processed Discount Report to update or modify the database in real time.
+![image](https://github.com/user-attachments/assets/aedc7716-a7f9-4230-ab86-449893e796ca)
 
 ### 2. **Real-Time Database Updates** 
 
 - All changes made via the main application are reflected in the MySQL database instantly.
+![image](https://github.com/user-attachments/assets/02782d3c-375d-40fa-b600-78967d3a6a0b)
 
 ### 3. **SQL Playground** 
 
 - Execute bulk SQL operations or custom queries on the database.
 - View query results or update the database directly.
+![image](https://github.com/user-attachments/assets/c7096a82-0daa-4769-a913-62962211041f)
+![image](https://github.com/user-attachments/assets/8eae8f4f-fa72-46dc-b6e4-c99f65f1b699)
 
 ### 4. **Customizable Reporting Interface** 
 
