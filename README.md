@@ -14,6 +14,7 @@ A streamlined application for syncing MYRTPOS data with MySQL and creating a cus
 
 - All changes made via the main application are reflected in the MySQL database instantly.
 ![image](https://github.com/user-attachments/assets/02782d3c-375d-40fa-b600-78967d3a6a0b)
+![image](https://github.com/user-attachments/assets/0f08080d-f984-4403-9b7a-087a643b2c19)
 
 ### 3. **SQL Playground** 
 
